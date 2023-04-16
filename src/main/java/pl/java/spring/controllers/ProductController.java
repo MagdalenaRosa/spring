@@ -3,50 +3,50 @@ package pl.java.spring.controllers;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import pl.java.spring.models.Product;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-@Controller // thx temu moge przejśc do tworzenia kontrolerów
+@Controller
 public class ProductController {
-    List<String>databases= new ArrayList<>();
-           ProductController(){
-            databases.add( "iPhone11");
-            databases.add( "iPhone12");
-            databases.add( "iPhone13");
-            databases.add( "iPhone14");
+    List<Product> database = new ArrayList<>();
+    ProductController() {
+        database.add(new Product(1, "iPhone X", "", "", BigDecimal.valueOf(10.99)));
+        database.add(new Product(3, "iPhone 11", "", "", BigDecimal.valueOf(15.10)));
+        database.add(new Product(6, "iPhone 12", "", "", BigDecimal.valueOf(20.33)));
+        database.add(new Product(9, "iPhone 13", "", "", BigDecimal.valueOf(17.77)));
     }
-    @GetMapping ("/")// MA ODWOŁANIE DO GŁOWNEJ STRONY to jest nasz root
-    public String ShowPrducts(Model model){
-        // ten model to te bebechy springa 
-        // jaką metodą będziemy odpytywać
-        // skoro klientem jest przeglodarka więc pyta przez get => cały czas
 
-        //jak chcemy odpowiedziec na zadane pytanie
-        // te pliku które zwracamy trzeba je dawać w templets
-        
-        // wskrzykiwanie danych przez model
-        model.addAttribute("title","Our products");
-        model.addAttribute("db",databases);
+    @GetMapping("/")
+    public String showProducts(Model model) {
+        model.addAttribute("title", "Product List");
+        model.addAttribute("db", database);
         return "Products";
-
-
-
     }
-    @GetMapping("/saveProduct")
-    public String saveProduct(@RequestParam("productName") String productName, Model model){
-        // odbieranie danych
-//    public String saveProduct(@RequestParam String productName){ // odbieranie danych mozna uzunąc o ile nazwa jest taka sama
-        if(!databases.contains(productName)) {
-            databases.add(productName);
-            model.addAttribute("db", databases);
+
+    @PostMapping("/saveProduct")
+    public String saveProduct(Product productFrom) {
+        var productExists = database.stream()
+                .map(Product::getName)
+                .anyMatch(dbProductName -> productFrom.getName().equals(dbProductName));
+        if (!productExists) {
+            var lastIndex = database.size() - 1;
+            var nextId = database.get(lastIndex).getId() + 1;
+            var product = new Product(nextId, productFrom.getName(), productFrom.getDesc(),
+                    productFrom.getImgUri(), productFrom.getPrice());
+            database.add(product);
         }
         return "redirect:/";
     }
+
     @GetMapping("/removeProduct")
-    public String removeProduct(@RequestParam("productName") String productName){
-        databases.removeIf(s -> s.equals(productName));
+    public String removeProduct(@RequestParam Integer productId) {
+        database.removeIf(dbProduct -> dbProduct.getId().equals(productId));
         return "redirect:/";
     }
 }
+

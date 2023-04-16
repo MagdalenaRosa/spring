@@ -11,8 +11,8 @@
 <ul>
 <!--    //for prduct in db print(product)-->
     <li th:each="product: ${db}">
-    <span th:text="${product}"></span>
-        <a th:href="'/removeProduct?productName='+${product}">❌</a>
+    <span th:text="${product.getName()}"></span>
+        <a th:href="'/removeProduct?productId='+${product.getId()}">❌</a>
 
     </li>
 <!--    th - od thimeleaf

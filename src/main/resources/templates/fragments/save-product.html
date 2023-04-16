@@ -1,6 +1,13 @@
 <form action="/saveProduct"
-        method="get">
+        method="post">
+<!--  post wysyła dane w sposób zaszyfrowany -->
 <!--  get -> metoda domyślna -->
-  <input name="productName" id="" placeholder="name">
+  <label>
+  <input name="name"  placeholder="name">
+  <input type="text" name="desc" placeholder="desc">
+  <input name="imgUri" placeholder="obraz">
+  <input name="price"  placeholder="product price" type="number">
+  </label>
   <button>Save</button>
+
 </form>
