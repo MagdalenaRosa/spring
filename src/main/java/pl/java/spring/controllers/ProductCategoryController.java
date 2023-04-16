@@ -5,7 +5,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import pl.java.spring.models.Product;
 import pl.java.spring.models.ProductCategory;
 
 import java.util.ArrayList;
@@ -44,6 +43,19 @@ public class ProductCategoryController {
     public String removeCategory(@RequestParam Integer categoryId) {
         data.removeIf(dataProduct -> dataProduct.getId().equals(categoryId));
         return "redirect:/Category";
+    }
+    @GetMapping("/categoryDetails")
+    public String showDetails(@RequestParam Integer categoryId, Model model){
+        model.addAttribute("id", categoryId);
+
+        var categoryList =data.stream()
+                .filter(dbcategory -> dbcategory.getId().equals(categoryId))
+                .toList();
+        if(!categoryList.isEmpty()){
+            var category=categoryList.get(0);// to jestem pewna że lista nie jest pusta
+            model.addAttribute("category",category);
+        }
+        return "/Cat";
     }
 
 

@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="${title}">Title</title>
+    <link rel="stylesheet" href="/CSS/styless.css">
+
+
 </head>
 <body>
 <div th:replace="~{fragments/main-menu}"></div>
@@ -11,8 +14,14 @@
 <ul>
 <!--    //for prduct in db print(product)-->
     <li th:each="product: ${db}">
-    <span th:text="${product.getName()}"></span>
-        <a th:href="'/removeProduct?productId='+${product.getId()}">❌</a>
+    <h2 th:text="${product.getName()}"></h2>
+        <p>
+            <a th:href="'/productDetails?productId='+${product.getId()}">Szczegóły produktu</a>
+        </p>
+
+        <p>
+            <a th:href="'/removeProduct?productId='+${product.getId()}">Usuń produkt ❌</a>
+        </p>
 
     </li>
 <!--    th - od thimeleaf
