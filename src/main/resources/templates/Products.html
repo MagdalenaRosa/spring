@@ -10,14 +10,17 @@
 <!--chcemy by te dane wprowadzane były dnamiczne nie statyczne więc trzeba je jakośc wepchnąc -->
 <ul>
 <!--    //for prduct in db print(product)-->
-    <li th:each="product: ${db}"
-        th:text="${product}"></li>
+    <li th:each="product: ${db}">
+    <span th:text="${product}"></span>
+        <a th:href="'/removeProduct?productName='+${product}">❌</a>
 
+    </li>
 <!--    th - od thimeleaf
 zapytanie ${} -> place holder
 
 -->
 </ul>
+<div th:replace="~{fragments/save-product}"></div>
 
 </body>
 </html>
