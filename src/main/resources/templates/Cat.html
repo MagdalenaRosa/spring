@@ -3,21 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="${title}">Title</title>
-    <link rel="stylesheet" href="/CSS/styless.css">
+    <link href="/CSS/styless.css" rel="stylesheet">
 
 </head>
 <body>
 
 <div th:replace="~{fragments/main-menu}"></div>
 
-    <h1 th:text="${category.getName()}"></h1>
+<h1 th:text="${category.getName()}"></h1>
 <p>
 
-    <img th:src="${category.getImgUri()}" src="" alt=""/>
+    <img alt="" src="" th:src="${category.getImgUri()}"/>
 </p>
 <p>
-
-    <span th:text="${category.getDesc()}" ></span>
+    <span th:text="${category.getDesc()}"></span>
 </p>
 
 
