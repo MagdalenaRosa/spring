@@ -14,6 +14,7 @@ import java.util.List;
 @Controller
 public class ProductController {
     List<Product> database = new ArrayList<>();
+
     ProductController() {
         database.add(new Product(1, "iPhone X", "fsdfsdfsdfsds", "https://allegro.stati.pl/AllegroIMG/PRODUCENCI/APPLE/iPhone%20X/c.jpg", BigDecimal.valueOf(10.99)));
         database.add(new Product(3, "iPhone 11", "dfsaqwrewrqewre", "https://files.refurbed.com/ii/iphone-11-1568185539.jpg?t=resize&h=600&w=800", BigDecimal.valueOf(15.10)));
@@ -34,8 +35,8 @@ public class ProductController {
                 .map(Product::getName)
                 .anyMatch(dbProductName -> productFrom.getName().equals(dbProductName));
         if (!productExists) {
-            var nextId=1;
-            if(database.size()>0){
+            var nextId = 1;
+            if (database.size() > 0) {
                 var lastId = database.size() - 1;
                 nextId = database.get(lastId).getId() + 1;
             }
@@ -50,16 +51,17 @@ public class ProductController {
         database.removeIf(dbProduct -> dbProduct.getId().equals(productId));
         return "redirect:/";
     }
+
     @GetMapping("/productDetails")
-    public String showDetails(@RequestParam Integer productId, Model model){
+    public String showDetails(@RequestParam Integer productId, Model model) {
         model.addAttribute("id", productId);
 
-        var productlist =database.stream()
+        var optionalProduct = database.stream()
                 .filter(dbproduct -> dbproduct.getId().equals(productId))
-                .toList();
-        if(!productlist.isEmpty()){
-            var product=productlist.get(0);// to jestem pewna że lista nie jest pusta
-            model.addAttribute("product",product);
+                .findFirst();
+        if (optionalProduct.isPresent()) {
+            var product = optionalProduct.get();// to jestem pewna że lista nie jest pusta
+            model.addAttribute("product", product);
         }
         return "/Product";
     }

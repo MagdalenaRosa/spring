@@ -53,12 +53,12 @@ public class ProductCategoryController {
     public String showDetails(@RequestParam Integer categoryId, Model model) {
         model.addAttribute("id", categoryId);
 
-        var categoryList = data.stream()
+        var optionalProductCategory = data.stream()
                 .filter(dbcategory -> dbcategory.getId().equals(categoryId))
 //                .toList();// nie można zamykać do listy
                 .findFirst();
-        if (!categoryList.isEmpty()) {
-            var category = categoryList.get();// to jestem pewna że lista nie jest pusta
+        if (optionalProductCategory.isPresent()) {// mówi że jest coś w niej
+            var category = optionalProductCategory.get();// to jestem pewna że lista nie jest pusta
             model.addAttribute("category", category);
 //            z tego modelu bierze się zmienną do html w ten th:
         }
