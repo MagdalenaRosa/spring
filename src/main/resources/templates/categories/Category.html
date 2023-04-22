@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="${title}">Title</title>
-    <link href="/CSS/styless.css" rel="stylesheet">
 
 
 </head>
@@ -15,6 +14,7 @@
         <!--        <h2 th:text="${category.getName()}"></h2>-->
         <a th:href="'/categoryDetails?categoryId='+${category.getId()}" th:text="${category.getName()}"></a>
         <a th:href="'/removeCategory?categoryId='+${category.getId()}">❌</a>
+        <a th:href="'/editCategory?categoryId='+${category.getId()}">[edit]</a>
 
 
     </li>

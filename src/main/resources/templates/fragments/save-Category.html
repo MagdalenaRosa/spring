@@ -1,9 +1,12 @@
-<form action="/saveCategory"
-      method="post">
+<form method="post"
+      th:action="${actionUri}">
     <label>
-        <input name="name" placeholder="name" type="text">
-        <input name="imgUri" placeholder="image" type="text">
-        <input name="desc" placeholder="desc" type="text">
+        <input name="name" placeholder="name"
+               th:value="${category!=null? category.getName():''}">
+        <textarea name="desc" placeholder="desc" rows="4"
+                  th:text="${category!=null? category.getDesc(): ''}"></textarea>
+        <input name="imgUri" placeholder="obraz"
+               th:value="${category!=null? category.getImgUri():''}">
     </label>
     <button>Save</button>
 </form>

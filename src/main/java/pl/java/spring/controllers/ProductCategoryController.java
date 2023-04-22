@@ -9,6 +9,7 @@ import pl.java.spring.models.ProductCategory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class ProductCategoryController {
@@ -23,7 +24,9 @@ public class ProductCategoryController {
     public String showCategory(Model model) {
         model.addAttribute("title", "Category");
         model.addAttribute("data", data);
-        return "Category";
+        model.addAttribute("actionUri", "/saveCategory");// w tym bo to jest ten w którym się znajduje to moje action
+
+        return "categories/Category";
     }
 
     @PostMapping("/saveCategory")
@@ -49,21 +52,43 @@ public class ProductCategoryController {
         return "redirect:/Category";
     }
 
+    @GetMapping("/editCategory")
+    public String showEditCategory(@RequestParam Integer categoryId, Model model) {
+        model.addAttribute("actionUri", "/editedCategory?categoryId=" + categoryId);
+        bindCategoryModel(categoryId, model);
+        return "categories/edit-category";
+
+    }
+
+    @PostMapping("/editedCategory")
+    public String saveEditedCategory(ProductCategory categoryForm, @RequestParam Integer categoryId) {
+        data = data.stream()
+                .map(category -> {
+                    if (category.getId().equals(categoryId)) {
+                        categoryForm.setId(categoryId);
+                        return categoryForm;
+                    }
+                    return category;
+
+                })
+                .collect(Collectors.toList());
+        return "redirect:/Category";
+    }
+
     @GetMapping("/categoryDetails")
     public String showDetails(@RequestParam Integer categoryId, Model model) {
         model.addAttribute("id", categoryId);
-
-        var categoryList = data.stream()
-                .filter(dbcategory -> dbcategory.getId().equals(categoryId))
-//                .toList();// nie można zamykać do listy
-                .findFirst();
-        if (!categoryList.isEmpty()) {
-            var category = categoryList.get();// to jestem pewna że lista nie jest pusta
-            model.addAttribute("category", category);
-//            z tego modelu bierze się zmienną do html w ten th:
-        }
-        return "/Cat";
+        bindCategoryModel(categoryId, model);
+        return "categories/Cat";
     }
 
-
+    private void bindCategoryModel(Integer productId, Model model) {
+        var optionalCategory = data.stream()
+                .filter(dbcategory -> dbcategory.getId().equals(productId))
+                .findFirst();
+        if (optionalCategory.isPresent()) {
+            var category = optionalCategory.get();// to jestem pewna że lista nie jest pusta
+            model.addAttribute("category", category);
+        }
+    }
 }

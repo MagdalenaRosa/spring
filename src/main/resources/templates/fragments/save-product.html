@@ -1,13 +1,17 @@
-<form action="/saveProduct"
-        method="post">
-<!--  post wysyła dane w sposób zaszyfrowany -->
-<!--  get -> metoda domyślna -->
-  <label>
-  <input name="name"  placeholder="name">
-  <input type="text" name="desc" placeholder="desc">
-  <input name="imgUri" placeholder="obraz">
-  <input name="price"  placeholder="product price" type="number">
-  </label>
-  <button>Save</button>
+<form method="post"
+      th:action="${actionUri}">
+    <!--  post wysyła dane w sposób zaszyfrowany -->
+    <!--  get -> metoda domyślna -->
+    <label>
+        <input name="name" placeholder="name"
+               th:value="${product!=null? product.getName():''}">
+        <textarea name="desc" placeholder="desc" rows="4"
+                  th:text="${product!=null? product.getDesc(): ''}"></textarea>
+        <input name="imgUri" placeholder="obraz"
+               th:value="${product!=null? product.getImgUri():''}">
+        <input name="price" placeholder="product price"
+               th:value="${product !=null?product.getPrice():''}" type="number">
+    </label>
+    <button>Save</button>
 
 </form>
