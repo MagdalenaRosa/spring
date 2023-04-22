@@ -6,24 +6,25 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.java.spring.models.ProductCategory;
+import pl.java.spring.services.ProductCategoryService;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
+// controller - zleca polecenia z serwisów
+// tylko dostawanie request , zlecanie poleceń
 @Controller
 public class ProductCategoryController {
-    List<ProductCategory> data = new ArrayList<>();
+    // tworzę nowe pole dla klasy w celu posiadania pola
+//    ProductCategoryService service = new ProductCategoryService();// tak się nie robi bo mamy zależność to my ja zarządzamy
+    ProductCategoryService service;
 
-    ProductCategoryController() {
-        data.add(new ProductCategory(1, "Phone", "opis", "img"));
-        data.add(new ProductCategory(2, "Tv", "opis", "img"));
+    // tu jest DI - dependency injection
+    ProductCategoryController(ProductCategoryService service) {
+        this.service = service;
     }
 
     @GetMapping("/Category")
     public String showCategory(Model model) {
         model.addAttribute("title", "Category");
-        model.addAttribute("data", data);
+        model.addAttribute("data", service.getProductCategories());
         model.addAttribute("actionUri", "/saveCategory");// w tym bo to jest ten w którym się znajduje to moje action
 
         return "categories/Category";
@@ -32,23 +33,13 @@ public class ProductCategoryController {
     @PostMapping("/saveCategory")
     public String saveCategory(ProductCategory productCategory) {
 //        sprawdzam czy dana kategoria już istnieje
-        var categoryExists = data.stream()
-                .anyMatch(s -> s.getName().equals(productCategory.getName()));
-        if (!categoryExists) {
-            var nextId = 1;
-            if (data.size() > 0) {
-                var lastId = data.size() - 1;
-                nextId = data.get(lastId).getId() + 1;
-            }
-            var category = new ProductCategory(nextId, productCategory.getName(), productCategory.getDesc(), productCategory.getImgUri());
-            data.add(category);
-        }
+        service.insertProductCategory(productCategory);
         return "redirect:/Category";
     }
 
     @GetMapping("/removeCategory")
     public String removeCategory(@RequestParam Integer categoryId) {
-        data.removeIf(dataProduct -> dataProduct.getId().equals(categoryId));
+        service.removeProductCategory(categoryId);
         return "redirect:/Category";
     }
 
@@ -62,16 +53,7 @@ public class ProductCategoryController {
 
     @PostMapping("/editedCategory")
     public String saveEditedCategory(ProductCategory categoryForm, @RequestParam Integer categoryId) {
-        data = data.stream()
-                .map(category -> {
-                    if (category.getId().equals(categoryId)) {
-                        categoryForm.setId(categoryId);
-                        return categoryForm;
-                    }
-                    return category;
-
-                })
-                .collect(Collectors.toList());
+        service.updateProductCategory(categoryForm, categoryId);
         return "redirect:/Category";
     }
 
@@ -82,10 +64,9 @@ public class ProductCategoryController {
         return "categories/Cat";
     }
 
+
     private void bindCategoryModel(Integer productId, Model model) {
-        var optionalCategory = data.stream()
-                .filter(dbcategory -> dbcategory.getId().equals(productId))
-                .findFirst();
+        var optionalCategory = service.findProductCategory(productId);
         if (optionalCategory.isPresent()) {
             var category = optionalCategory.get();// to jestem pewna że lista nie jest pusta
             model.addAttribute("category", category);

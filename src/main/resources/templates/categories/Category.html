@@ -14,10 +14,7 @@
         <!--        <h2 th:text="${category.getName()}"></h2>-->
         <a th:href="'/categoryDetails?categoryId='+${category.getId()}" th:text="${category.getName()}"></a>
         <a th:href="'/removeCategory?categoryId='+${category.getId()}">❌</a>
-        <a th:href="'/editCategory?categoryId='+${category.getId()}">[edit]</a>
-
-
-    </li>
+        <a th:href="'/editCategory?categoryId='+${category.getId()}">[Edit]</a>
 </ul>
 <div th:replace="~{fragments/save-Category}"></div>
 
