@@ -25,8 +25,6 @@ public class ProductCategoryService {
 
     public ProductCategoryService(ProductCategoryRepository productCategoryRepository) {
         this.productCategoryRepository = productCategoryRepository;
-        productCategoryRepository.save(new ProductCategory("Phone", "opis", "img"));
-        productCategoryRepository.save(new ProductCategory("Tv", "opis", "img"));
     }
 
     public List<ProductCategory> getProductCategories() {
@@ -56,7 +54,7 @@ public class ProductCategoryService {
     }
 
     public void updateProductCategory(ProductCategory categoryForm, @RequestParam Integer categoryId) {
-        categoryForm.setId(categoryId);
+        categoryForm.setId(categoryId);// tu dajesz obiekt i do obiektu ustawiasz id
         productCategoryRepository.save(categoryForm);
     }
 }
