@@ -1,16 +1,27 @@
 package pl.java.spring.models;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
 public class ProductCategory {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private  String name;
+    private String name;
     private String desc;
     private String imgUri;
 
-    public ProductCategory(Integer id, String name,String desc, String imgUri){
-        this.id=id;
-        this.name=name;
-        this.desc=desc;
-        this.imgUri= imgUri;
+    public ProductCategory(String name, String desc, String imgUri) {
+        this.name = name;
+        this.desc = desc;
+        this.imgUri = imgUri;
+    }
+
+    public ProductCategory() {
+
     }
 
     public Integer getId() {
@@ -40,6 +51,7 @@ public class ProductCategory {
     public String getImgUri() {
         return imgUri;
     }
+
     public void setImgUri(String imgUri) {
         this.imgUri = imgUri;
     }

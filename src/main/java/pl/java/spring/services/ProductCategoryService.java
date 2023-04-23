@@ -3,11 +3,10 @@ package pl.java.spring.services;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.java.spring.models.ProductCategory;
+import pl.java.spring.repositories.ProductCategoryRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 // TU SĄ TE KTÓRE mają jakieś działania
 // one sa pod obsługe danych -> zarządca danych
@@ -22,53 +21,42 @@ import java.util.stream.Collectors;
 //- @controller
 //- @service
 public class ProductCategoryService {
-    private List<ProductCategory> data = new ArrayList<>();
+    ProductCategoryRepository productCategoryRepository;
 
-    public ProductCategoryService() {
-        data.add(new ProductCategory(1, "Phone", "opis", "img"));
-        data.add(new ProductCategory(2, "Tv", "opis", "img"));
+    public ProductCategoryService(ProductCategoryRepository productCategoryRepository) {
+        this.productCategoryRepository = productCategoryRepository;
+        productCategoryRepository.save(new ProductCategory("Phone", "opis", "img"));
+        productCategoryRepository.save(new ProductCategory("Tv", "opis", "img"));
     }
 
     public List<ProductCategory> getProductCategories() {
-        return data;
+        return productCategoryRepository.findAll();
     }
 
     public Optional<ProductCategory> findProductCategory(Integer categoryId) {
-        return data.stream()
-                .filter(dbcategory -> dbcategory.getId().equals(categoryId))
-                .findFirst();
+        return productCategoryRepository.findById(categoryId);
 
     }
 
     public void removeProductCategory(Integer categoryId) {
-        data.removeIf(dataProduct -> dataProduct.getId().equals(categoryId));
-
+        productCategoryRepository.deleteById(categoryId);
     }
 
     public void insertProductCategory(ProductCategory productCategory) {
-        var categoryExists = data.stream()
-                .anyMatch(s -> s.getName().equals(productCategory.getName()));
+        var categoryExists = existsProductCategoryByName(productCategory);
         if (!categoryExists) {
-            var nextId = 1;
-            if (data.size() > 0) {
-                var lastId = data.size() - 1;
-                nextId = data.get(lastId).getId() + 1;
-            }
-            var category = new ProductCategory(nextId, productCategory.getName(), productCategory.getDesc(), productCategory.getImgUri());
-            data.add(category);
+            productCategory.setId(null);
+            productCategoryRepository.save(productCategory);
         }
     }
 
-    public void updateProductCategory(ProductCategory categoryForm, @RequestParam Integer categoryId) {
-        data = data.stream()
-                .map(category -> {
-                    if (category.getId().equals(categoryId)) {
-                        categoryForm.setId(categoryId);
-                        return categoryForm;
-                    }
-                    return category;
+    private boolean existsProductCategoryByName(ProductCategory productCategory) {
+        return productCategoryRepository.existsByName(productCategory.getName());
 
-                })
-                .collect(Collectors.toList());
+    }
+
+    public void updateProductCategory(ProductCategory categoryForm, @RequestParam Integer categoryId) {
+        categoryForm.setId(categoryId);
+        productCategoryRepository.save(categoryForm);
     }
 }
