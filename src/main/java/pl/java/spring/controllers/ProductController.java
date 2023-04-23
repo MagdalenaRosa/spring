@@ -11,35 +11,35 @@ import pl.java.spring.services.ProductService;
 @Controller
 public class ProductController {
     //    ProductService service = new ProductService();// tak się nie robi bo mamy zależność to my ja zarządzamy
-    ProductService service;
+    ProductService productService;
 
-    ProductController(ProductService service) {
-        this.service = service;
+    ProductController(ProductService productService) {
+        this.productService = productService;
     }
 
     @GetMapping("/")
     public String showProducts(Model model) {
         model.addAttribute("title", "Product List");
-        model.addAttribute("db", service.getProduct());
+        model.addAttribute("db", productService.getProduct());
         model.addAttribute("actionUri", "/saveProduct");// w tym bo to jest ten w którym się znajduje to moje action
         return "products/Products";
     }
 
     @PostMapping("/saveProduct")
     public String saveProduct(Product productFrom) {
-        service.insertProduct(productFrom);
+        productService.insertProduct(productFrom);
         return "redirect:/";
     }
 
     @GetMapping("/removeProduct")
     public String removeProduct(@RequestParam Integer productId) {
-        service.removeProduct(productId);
+        productService.removeProduct(productId);
         return "redirect:/";
     }
 
     @PostMapping("/editedProduct")
     public String saveEditedProduct(Product productForm, @RequestParam Integer productId) {
-        service.updateProduct(productId, productForm);
+        productService.updateProduct(productId, productForm);
         return "redirect:/";
     }
 
@@ -60,7 +60,7 @@ public class ProductController {
     }
 
     private void bindProductModel(Integer productId, Model model) {
-        var optionalProduct = service.findProduct(productId);
+        var optionalProduct = productService.findProduct(productId);
         if (optionalProduct.isPresent()) {
             var product = optionalProduct.get();// to jestem pewna że lista nie jest pusta
             model.addAttribute("product", product);

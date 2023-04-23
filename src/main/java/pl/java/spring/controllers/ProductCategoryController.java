@@ -14,17 +14,17 @@ import pl.java.spring.services.ProductCategoryService;
 public class ProductCategoryController {
     // tworzę nowe pole dla klasy w celu posiadania pola
 //    ProductCategoryService service = new ProductCategoryService();// tak się nie robi bo mamy zależność to my ja zarządzamy
-    ProductCategoryService service;
+    ProductCategoryService productCategoryService;
 
     // tu jest DI - dependency injection
-    ProductCategoryController(ProductCategoryService service) {
-        this.service = service;
+    ProductCategoryController(ProductCategoryService productCategoryService) {
+        this.productCategoryService = productCategoryService;
     }
 
     @GetMapping("/Category")
     public String showCategory(Model model) {
         model.addAttribute("title", "Category");
-        model.addAttribute("data", service.getProductCategories());
+        model.addAttribute("data", productCategoryService.getProductCategories());
         model.addAttribute("actionUri", "/saveCategory");// w tym bo to jest ten w którym się znajduje to moje action
 
         return "categories/Category";
@@ -33,13 +33,13 @@ public class ProductCategoryController {
     @PostMapping("/saveCategory")
     public String saveCategory(ProductCategory productCategory) {
 //        sprawdzam czy dana kategoria już istnieje
-        service.insertProductCategory(productCategory);
+        productCategoryService.insertProductCategory(productCategory);
         return "redirect:/Category";
     }
 
     @GetMapping("/removeCategory")
     public String removeCategory(@RequestParam Integer categoryId) {
-        service.removeProductCategory(categoryId);
+        productCategoryService.removeProductCategory(categoryId);
         return "redirect:/Category";
     }
 
@@ -53,7 +53,7 @@ public class ProductCategoryController {
 
     @PostMapping("/editedCategory")
     public String saveEditedCategory(ProductCategory categoryForm, @RequestParam Integer categoryId) {
-        service.updateProductCategory(categoryForm, categoryId);
+        productCategoryService.updateProductCategory(categoryForm, categoryId);
         return "redirect:/Category";
     }
 
@@ -66,10 +66,13 @@ public class ProductCategoryController {
 
 
     private void bindCategoryModel(Integer productId, Model model) {
-        var optionalCategory = service.findProductCategory(productId);
+        var optionalCategory = productCategoryService.findProductCategory(productId);
         if (optionalCategory.isPresent()) {
             var category = optionalCategory.get();// to jestem pewna że lista nie jest pusta
             model.addAttribute("category", category);
         }
+        //warunek jak jest pusty
+        //todo
+
     }
 }
