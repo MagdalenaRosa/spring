@@ -7,12 +7,14 @@ import jakarta.persistence.Id;
 
 import java.math.BigDecimal;
 
+// na ekcje bazy min: @entity, @id
 @Entity
 public class Product {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id // potrzebne do zdef klucza podst w baziwe
+    @GeneratedValue(strategy = GenerationType.IDENTITY)//określa że istnieje unikalny klucz dla każdej tabeli
     private Integer id;
     private String name;
+    //    @Column(length = 1023)// jak chcemy
     private String desc;
     private String imgUri;
     private BigDecimal price;

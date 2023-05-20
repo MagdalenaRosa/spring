@@ -3,8 +3,8 @@ package pl.java.spring.controllers;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import pl.java.spring.models.ProductCategory;
 import pl.java.spring.services.ProductCategoryService;
 
@@ -37,28 +37,28 @@ public class ProductCategoryController {
         return "redirect:/Category";
     }
 
-    @GetMapping("/removeCategory")
-    public String removeCategory(@RequestParam Integer categoryId) {
+    @GetMapping("/removeCategory/{categoryId}")
+    public String removeCategory(@PathVariable Integer categoryId) {
         productCategoryService.removeProductCategory(categoryId);
         return "redirect:/Category";
     }
 
-    @GetMapping("/editCategory")
-    public String showEditCategory(@RequestParam Integer categoryId, Model model) {
-        model.addAttribute("actionUri", "/editedCategory?categoryId=" + categoryId);
+    @GetMapping("/editCategory/{categoryId}")
+    public String showEditCategory(@PathVariable Integer categoryId, Model model) {
+        model.addAttribute("actionUri", "/editedCategory/" + categoryId);
         bindCategoryModel(categoryId, model);
         return "categories/edit-category";
 
     }
 
-    @PostMapping("/editedCategory")
-    public String saveEditedCategory(ProductCategory categoryForm, @RequestParam Integer categoryId) {
+    @PostMapping("/editedCategory/{categoryId}")
+    public String saveEditedCategory(ProductCategory categoryForm, @PathVariable Integer categoryId) {
         productCategoryService.updateProductCategory(categoryForm, categoryId);
         return "redirect:/Category";
     }
 
-    @GetMapping("/categoryDetails")
-    public String showDetails(@RequestParam Integer categoryId, Model model) {
+    @GetMapping("/categoryDetails/{categoryId}")
+    public String showDetails(@PathVariable Integer categoryId, Model model) {
         model.addAttribute("id", categoryId);
         bindCategoryModel(categoryId, model);
         return "categories/Cat";

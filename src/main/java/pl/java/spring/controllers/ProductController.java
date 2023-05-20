@@ -3,8 +3,8 @@ package pl.java.spring.controllers;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import pl.java.spring.models.Product;
 import pl.java.spring.services.ProductService;
 
@@ -31,28 +31,28 @@ public class ProductController {
         return "redirect:/";
     }
 
-    @GetMapping("/removeProduct")
-    public String removeProduct(@RequestParam Integer productId) {
+    @GetMapping("/removeProduct/{productId}")
+    public String removeProduct(@PathVariable Integer productId) {
         productService.removeProduct(productId);
         return "redirect:/";
     }
 
-    @PostMapping("/editedProduct")
-    public String saveEditedProduct(Product productForm, @RequestParam Integer productId) {
+    @PostMapping("/editedProduct/{productId}")
+    public String saveEditedProduct(Product productForm, @PathVariable Integer productId) {
         productService.updateProduct(productId, productForm);
         return "redirect:/";
     }
 
-    @GetMapping("/editProduct")
-    public String showEditProduct(@RequestParam Integer productId, Model model) {
-        model.addAttribute("actionUri", "/editedProduct?productId=" + productId);
+    @GetMapping("/editProduct/{productId}")
+    public String showEditProduct(@PathVariable Integer productId, Model model) {
+        model.addAttribute("actionUri", "/editedProduct/" + productId);
         bindProductModel(productId, model);
         return "products/edit-Product";
 
     }
 
-    @GetMapping("/productDetails")
-    public String showDetails(@RequestParam Integer productId, Model model) {
+    @GetMapping("/productDetails/{productId}")
+    public String showDetails(@PathVariable Integer productId, Model model) {
         model.addAttribute("id", productId);
 
         bindProductModel(productId, model);
