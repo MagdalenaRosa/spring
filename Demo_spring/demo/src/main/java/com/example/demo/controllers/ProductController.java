@@ -56,14 +56,14 @@ public class ProductController {
 
     @GetMapping("/productDetails")
     public String showProductDetail(@RequestParam Integer productId, Model model) {
-        var productList = database.stream()
+        var optionalProduct = database.stream()
                 .filter(product -> product.getId().equals(productId))
-                .toList();
-        if (productList.isEmpty()) {
-
-        } else {
-            var product = productList.get(0);
+                .findFirst();
+        if (optionalProduct.isPresent()) {
+            var product = optionalProduct.get();
             model.addAttribute("product", product);
+        } else {
+           
         }
         model.addAttribute("title", "Product detail");
 

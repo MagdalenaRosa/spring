@@ -53,15 +53,15 @@ public class ProductCategoryController {
 
     @GetMapping("/categoryDetail")
     public String showCategoryDetail(@RequestParam Integer categoryID, Model model) {
-        var categoryList = productCategoryList.stream()
+        var optionalCategoryList = productCategoryList.stream()
                 .filter(category -> category.getId().equals(categoryID))
-                .toList();
+                .findFirst();
 
-        if (categoryList.isEmpty()) {
-
-        } else {
-            var category = categoryList.get(0);
+        if (optionalCategoryList.isPresent()) {
+  var category =optionalCategoryList.get();
             model.addAttribute("category", category);
+        } else {
+          
         }
 
         model.addAttribute("title", "Category detail");
