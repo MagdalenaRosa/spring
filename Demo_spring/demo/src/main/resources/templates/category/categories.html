@@ -10,6 +10,7 @@
 <li th:each="category : ${categoryDB}">
     <a th:href="'/categoryDetail?categoryID='+${category.getId()}" th:text="${category.getName()}"></a>
     <a th:href="'/removeCategory?categoryID='+${category.getId()}">[x]</a>
+    <a th:href="'/editCategory?categoryId=' + ${category.getId()}">[edit]</a>
 </li>
 <div th:replace="~{fragments/save-category}"></div>
 

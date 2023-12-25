@@ -1,0 +1,11 @@
+<div th:replace="~{fragments/main-menu}"></div>
+<form method="post" th:action="${action}">
+    <input name="name" placeholder="Category name"
+           th:value="${ category != null ? category.getName() : '' }"/>
+    <input name="desc" placeholder="Category desc"
+           th:value="${ category != null ? category.getDesc() : ''}"/>
+    <input name="imgUri" placeholder="Category img"
+           th:value="${ category != null ? category.getImgUri() : '' }"/>
+    <button>Save</button>
+</form>
+

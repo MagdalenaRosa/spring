@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class ProductController {
@@ -27,13 +28,14 @@ public class ProductController {
     public String showProducts(Model model) {
         model.addAttribute("title", "Products");
         model.addAttribute("db", database);
-        return "products";
+        return "product/products";
     }
 
 
     @PostMapping("/saveProduct")// metodą post by dane były chronione
     // tu te @requestparam muszą być takie jak w modelu Product nie inne !!! -> lepiej żeby przyjmowało obiekt product
-    public String saveProduct(Product productform) {
+    public String saveProduct(Product productform, Model model) {
+        model.addAttribute("action", "/saveProduct");
         var productExist = database.stream().anyMatch(product -> product.getName().equals(productform.getName()));
         if (!productExist) {
             var nextId = 1;
@@ -56,19 +58,42 @@ public class ProductController {
 
     @GetMapping("/productDetails")
     public String showProductDetail(@RequestParam Integer productId, Model model) {
-        var optionalProduct = database.stream()
-                .filter(product -> product.getId().equals(productId))
-                .findFirst();
-        if (optionalProduct.isPresent()) {
-            var product = optionalProduct.get();
-            model.addAttribute("product", product);
-        } else {
-           
-        }
-        model.addAttribute("title", "Product detail");
+    optionalProduct(productId, model);
 
-        return "/product-detail";
+        return "product/product-detail";
+    }
+    @GetMapping("/editProduct")
+    public String showEditProductForm(@RequestParam Integer productId, Model model) {
+        model.addAttribute("action", "/editedProduct?productId=" + productId);
+        optionalProduct(productId, model);
+        return "product/edit-product";
+    }
+
+    @PostMapping("/editedProduct") 
+    public String saveEditedProduct(Product productFrom, @RequestParam Integer productId) {
+        database = database.stream()
+            .map(product -> {
+                if (product.getId().equals(productId)) {
+                    productFrom.setId(productId);
+                    return productFrom;
+                }
+                return product;
+            })
+            .collect(Collectors.toList());
+        return "redirect:/";
     }
 
 
-}
+
+private void optionalProduct(@RequestParam Integer productId, Model model){
+        var optionalProduct = database.stream()
+                .filter(product -> product.getId().equals(productId))
+                .findFirst();
+    if (optionalProduct.isPresent()) {
+            var product = optionalProduct.get();
+            model.addAttribute("product", product);
+
+             model.addAttribute("title", "Product");
+
+    
+    }}}

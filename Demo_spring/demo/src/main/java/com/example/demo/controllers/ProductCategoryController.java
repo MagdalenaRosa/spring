@@ -1,5 +1,6 @@
 package com.example.demo.controllers;
 
+import com.example.demo.models.Product;
 import com.example.demo.models.ProductCategory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class ProductCategoryController {
@@ -26,7 +28,7 @@ public class ProductCategoryController {
         model.addAttribute("title", "Category List");
         model.addAttribute("categoryDB", productCategoryList);
 
-        return "categories";
+        return "category/categories";
     }
 
     @PostMapping("/saveCategory")
@@ -45,10 +47,35 @@ public class ProductCategoryController {
         return "redirect:/categories";
     }
 
+
+    @GetMapping("/editCategory")
+    public String showEditCategoryForm(@RequestParam Integer categoryId, Model model) {
+        model.addAttribute("action", "/editedCategory?categoryId=" + categoryId);
+        bindCategory(categoryId, model);
+
+        return "category/edit-category"; 
+    }
+
+    @PostMapping("/editedCategory")
+    public String saveEditedCategory(@RequestParam Integer categoryId, ProductCategory categoryForm) {
+        productCategoryList = productCategoryList.stream()
+            .map(productCategory -> {
+                if (productCategory.getId().equals(categoryId)) {
+                    categoryForm.setId(categoryId);
+                    return categoryForm;
+                }
+                return productCategory;
+            })
+            .collect(Collectors.toList()); // utworzenie listy modyfikowalnej
+        // .toList() // utworzona zostanie lista niemutowalna (niemodyfikowalnej)
+        return "redirect:/categories";
+    }
+
+
     @GetMapping("/removeCategory")
     public String removeProductCategory(@RequestParam Integer categoryID) {
         productCategoryList.removeIf(category -> category.getId().equals(categoryID));
-        return "redirect:/categories";
+        return "redirect:categories";
     }
 
     @GetMapping("/categoryDetail")
@@ -66,8 +93,20 @@ public class ProductCategoryController {
 
         model.addAttribute("title", "Category detail");
 
-        return "/category-detail";
+        return "category/category-detail";
 
     }
 
-}
+
+private void bindCategory(@RequestParam Integer categoryId, Model model){
+        var optionalCategory = productCategoryList.stream()
+                .filter(category -> category.getId().equals(categoryId))
+                .findFirst();
+    if (optionalCategory.isPresent()) {
+            var category = optionalCategory.get();
+            model.addAttribute("category", category);
+
+             model.addAttribute("title", "category");
+
+    
+    }}}
