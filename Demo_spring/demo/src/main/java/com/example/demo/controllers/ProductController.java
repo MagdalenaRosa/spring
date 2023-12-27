@@ -69,7 +69,7 @@ public class ProductController {
         return "product/edit-product";
     }
 
-    @PostMapping("/editedProduct") 
+    @PostMapping("/editedProduct") // /editedProduct?productId=4
     public String saveEditedProduct(Product productFrom, @RequestParam Integer productId) {
         database = database.stream()
             .map(product -> {
