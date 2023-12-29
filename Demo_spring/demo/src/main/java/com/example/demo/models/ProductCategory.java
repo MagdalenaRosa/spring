@@ -1,6 +1,11 @@
 package com.example.demo.models;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+@Entity // to hibernate -> do baz 
 public class ProductCategory {
+    @Id
     private Integer id;
     private String name;
     private String desc;
