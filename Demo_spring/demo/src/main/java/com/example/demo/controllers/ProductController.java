@@ -12,39 +12,39 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class ProductController {
 
-    ProductService pService;
+    ProductService productService;
 
-    ProductController(ProductService pService) { // DependencyIncjection
-        this.pService = pService;
+    ProductController(ProductService productService) { // DI
+        this.productService = productService;
     }
 
     @GetMapping("/")
     public String showProducts(Model model) {
         model.addAttribute("title", "Products");
-        model.addAttribute("db", pService.getDatabase());
+        model.addAttribute("db", productService.findAllProducts());
+        model.addAttribute("action", "/saveProduct");
         return "product/products";
     }
 
     @PostMapping("/saveProduct") // metodą post by dane były chronione
     // tu te @requestparam muszą być takie jak w modelu Product nie inne !!! ->
     // lepiej żeby przyjmowało obiekt product
-    public String saveProduct(Product productform, Model model) {
-        model.addAttribute("action", "/saveProduct");
-
-        pService.insertProduct(productform);
-        return "redirect:/";
-    }
-
-    @GetMapping("/removeProduct")
-    public String removeProduct(@RequestParam Integer productId) {
-        pService.deleteProduct(productId);
+    public String saveProduct(Product productform) {
+        productService.insertProduct(productform);
         return "redirect:/";
     }
 
     @GetMapping("/productDetails")
     public String showProductDetail(@RequestParam Integer productId, Model model) {
+        model.addAttribute("id", productId);
         optionalProduct(productId, model);
         return "product/product-detail";
+    }
+
+    @GetMapping("/removeProduct")
+    public String removeProduct(@RequestParam Integer productId) {
+        productService.deleteProduct(productId);
+        return "redirect:/";
     }
 
     @GetMapping("/editProduct")
@@ -56,12 +56,12 @@ public class ProductController {
 
     @PostMapping("/editedProduct")
     public String saveEditedProduct(Product productFrom, @RequestParam Integer productId) {
-        pService.editProduct(productFrom, productId);
+        productService.updateProduct(productFrom, productId);
         return "redirect:/";
     }
 
     private void optionalProduct(@RequestParam Integer productId, Model model) {
-        var optionalProduct = pService.findProduct(productId);
+        var optionalProduct = productService.findProduct(productId);
         if (optionalProduct.isPresent()) {
             var product = optionalProduct.get();
             model.addAttribute("product", product);
