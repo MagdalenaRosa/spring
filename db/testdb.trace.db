@@ -1,0 +1,18 @@
+2023-12-30 14:12:04.967029+01:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUCT_CATEGORY" not found (this database is empty); SQL statement:
+select pc1_0.id,pc1_0.desc,pc1_0.img_uri,pc1_0.name from product_category pc1_0 [42104-224]
+2023-12-30 14:12:07.477542+01:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUCT_CATEGORY" not found (this database is empty); SQL statement:
+select pc1_0.id,pc1_0.desc,pc1_0.img_uri,pc1_0.name from product_category pc1_0 [42104-224]
+2023-12-30 14:12:08.615875+01:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUCT_CATEGORY" not found (this database is empty); SQL statement:
+select pc1_0.id,pc1_0.desc,pc1_0.img_uri,pc1_0.name from product_category pc1_0 [42104-224]
+2023-12-30 14:13:35.119383+01:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: Obiekt jest zamknięty
+The object is already closed [90007-224]
+2023-12-30 14:14:52.084205+01:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: Obiekt jest zamknięty
+The object is already closed [90007-224]
+2023-12-30 14:14:56.556967+01:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: Obiekt jest zamknięty
+The object is already closed [90007-224]

@@ -1,52 +1,26 @@
 package com.example.demo.models;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Entity // to hibernate -> do baz 
+@Entity // to hibernate -> do baz
+@NoArgsConstructor
+@Getter
+@Setter
 public class ProductCategory {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
+    @Column(length = 1024)
     private String desc;
+    @Column(length = 1024)
     private String imgUri;
 
-    public ProductCategory(Integer id, String name, String desc, String imgUri) {
-        this.id = id;
-        this.name = name;
-        this.desc = desc;
-        this.imgUri = imgUri;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDesc() {
-        return desc;
-    }
-
-    public void setDesc(String desc) {
-        this.desc = desc;
-    }
-
-    public String getImgUri() {
-        return imgUri;
-    }
-
-    public void setImgUri(String imgUri) {
-        this.imgUri = imgUri;
-    }
 }
