@@ -17,8 +17,9 @@ public class ProductCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Column(nullable = false)
     private String name;
-    @Column(length = 1024)
+    @Column(columnDefinition = "Text")
     private String desc;
     @Column(length = 1024)
     private String imgUri;

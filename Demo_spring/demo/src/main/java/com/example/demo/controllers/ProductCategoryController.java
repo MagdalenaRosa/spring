@@ -6,6 +6,7 @@ import com.example.demo.services.ProductCategoryService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -33,32 +34,32 @@ public class ProductCategoryController {
         return "redirect:/categories";
     }
 
-    @GetMapping("/categoryDetail")
-    public String showCategoryDetail(@RequestParam Integer categoryID, Model model) {
+    @GetMapping("/categoryDetail/{categoryID}")
+    public String showCategoryDetail(@PathVariable Integer categoryID, Model model) {
         model.addAttribute("id", categoryID);
         bindCategory(categoryID, model);
         return "category/category-detail";
 
     }
 
-    @GetMapping("/editCategory")
-    public String showEditCategoryForm(@RequestParam Integer categoryId, Model model) {
-        model.addAttribute("action", "/editedCategory?categoryId=" + categoryId);
+    @GetMapping("/editCategory/{categoryId}")
+    public String showEditCategoryForm(@PathVariable Integer categoryId, Model model) {
+        model.addAttribute("action", "/editedCategory/" + categoryId);
         bindCategory(categoryId, model);
 
         return "category/edit-category";
     }
 
-    @PostMapping("/editedCategory")
-    public String saveEditedCategory(@RequestParam Integer categoryId, ProductCategory categoryForm) {
+    @PostMapping("/editedCategory/{categoryId}")
+    public String saveEditedCategory(@PathVariable Integer categoryId, ProductCategory categoryForm) {
         service.updateCategory(categoryForm, categoryId);
         return "redirect:/categories";
     }
 
-    @GetMapping("/removeCategory")
-    public String removeProductCategory(@RequestParam Integer categoryID) {
+    @GetMapping("/removeCategory/{categoryID}")
+    public String removeProductCategory(@PathVariable Integer categoryID) {
         service.deleteCategory(categoryID);
-        return "redirect:categories";
+        return "redirect:/categories";
     }
 
     private void bindCategory(@RequestParam Integer categoryId, Model model) {

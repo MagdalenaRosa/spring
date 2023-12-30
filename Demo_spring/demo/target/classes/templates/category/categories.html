@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title th:text="${title}"></title>
-</head>
-<body>
-<div th:replace="~{fragments/main-menu}"></div>
-<h1 th:text="${title}"></h1>
-<li th:each="category : ${categoryDB}">
-    <a th:href="'/categoryDetail?categoryID='+${category.getId()}" th:text="${category.getName()}"></a>
-    <a th:href="'/removeCategory?categoryID='+${category.getId()}">[x]</a>
-    <a th:href="'/editCategory?categoryId=' + ${category.getId()}">[edit]</a>
-</li>
-<div th:replace="~{fragments/save-category}"></div>
-
-</body>
+  </head>
+  <body>
+    <div th:replace="~{fragments/main-menu}"></div>
+    <h1 th:text="${title}"></h1>
+    <li th:each="category : ${categoryDB}">
+      <a
+        th:href="'/categoryDetail/'+${category.getId()}"
+        th:text="${category.getName()}"
+      ></a>
+      <a th:href="'/removeCategory/'+${category.getId()}">[x]</a>
+      <a th:href="'/editCategory/' + ${category.getId()}">[edit]</a>
+    </li>
+    <div th:replace="~{fragments/save-category}"></div>
+  </body>
 </html>
