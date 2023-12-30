@@ -3,6 +3,8 @@ package com.example.demo.controllers;
 import com.example.demo.models.Product;
 import com.example.demo.services.ProductService;
 
+import jakarta.validation.Valid;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +32,7 @@ public class ProductController {
     @PostMapping("/saveProduct") // metodą post by dane były chronione
     // tu te @requestparam muszą być takie jak w modelu Product nie inne !!! ->
     // lepiej żeby przyjmowało obiekt product
-    public String saveProduct(Product productform) {
+    public String saveProduct(@Valid Product productform) {
         productService.insertProduct(productform);
         return "redirect:/";
     }

@@ -3,6 +3,8 @@ package com.example.demo.controllers;
 import com.example.demo.models.ProductCategory;
 import com.example.demo.services.ProductCategoryService;
 
+import jakarta.validation.Valid;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +31,7 @@ public class ProductCategoryController {
     }
 
     @PostMapping("/saveCategory")
-    public String saveProductCategory(ProductCategory productCategoryForm) {
+    public String saveProductCategory(@Valid ProductCategory productCategoryForm) {
         service.insertCategory(productCategoryForm);
         return "redirect:/categories";
     }
