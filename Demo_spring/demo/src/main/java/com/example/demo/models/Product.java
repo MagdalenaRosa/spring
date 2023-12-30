@@ -20,7 +20,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
-    @Column(length = 1024)
+    @Column(length = 1024, name = "description")
     private String desc;
     @Column(length = 1024)
     private String urlUri;

@@ -19,7 +19,7 @@ public class ProductCategory {
     private Integer id;
     @Column(nullable = false)
     private String name;
-    @Column(columnDefinition = "Text")
+    @Column(columnDefinition = "Text", name = "description")
     private String desc;
     @Column(length = 1024)
     private String imgUri;
