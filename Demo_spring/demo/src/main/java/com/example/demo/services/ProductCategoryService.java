@@ -7,14 +7,13 @@ import org.springframework.stereotype.Service;
 import com.example.demo.models.ProductCategory;
 import com.example.demo.repositories.ProductCategoryRepository;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Service
 public class ProductCategoryService { // cała logika biznesowa w nim znajdowane są
 
-    ProductCategoryRepository productCategoryRepository;
-
-    public ProductCategoryService(ProductCategoryRepository productCategoryRepository) {
-        this.productCategoryRepository = productCategoryRepository;
-    }
+    final ProductCategoryRepository productCategoryRepository;
 
     public List<ProductCategory> findAllCategories() {
         return productCategoryRepository.findAll();
