@@ -4,6 +4,7 @@ import com.example.demo.models.ProductCategory;
 import com.example.demo.services.ProductCategoryService;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.stereotype.Controller;
@@ -15,14 +16,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+@RequiredArgsConstructor
 @Controller
 public class ProductCategoryController {
 
-    ProductCategoryService service;
-
-    ProductCategoryController(ProductCategoryService service) {
-        this.service = service;
-    }
+    final ProductCategoryService service;
 
     @GetMapping("/categories")
     public String showProductCategory(Model model) {

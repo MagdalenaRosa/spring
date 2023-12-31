@@ -4,6 +4,7 @@ import com.example.demo.models.Product;
 import com.example.demo.services.ProductService;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.stereotype.Controller;
@@ -15,14 +16,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+@RequiredArgsConstructor
 @Controller
 public class ProductController {
 
-    ProductService productService;
-
-    ProductController(ProductService productService) { // DI
-        this.productService = productService;
-    }
+    final ProductService productService;
 
     @GetMapping("/")
     public String showProducts(Model model) {
