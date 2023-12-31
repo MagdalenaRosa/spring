@@ -1,8 +1,29 @@
 <hr />
-<form method="post" action="/saveProduct">
-  <input name="name" placeholder="Product name" />
-  <input name="desc" placeholder="Product description" />
-  <input name="urlUri" placeholder="Image " />
-  <input name="price" placeholder="Product price" />
+<ul>
+  <li th:each="error : ${errors}" th:text="${error}"></li>
+</ul>
+<form method="post" th:action="${action}">
+  <input
+    name="name"
+    placeholder="Product name"
+    th:value="${ product != null ? product.getName() : '' }"
+  />
+  <input
+    name="price"
+    placeholder="Product price"
+    th:value="${ product != null ? product.getPrice() : '' }"
+    type="number"
+  />
+  <input
+    name="urlUri"
+    placeholder="Product img"
+    th:value="${ product != null ? product.getUrlUri() : '' }"
+  />
+  <textarea
+    name="desc"
+    placeholder="Product desc"
+    rows="5"
+    th:text="${ product != null ? product.getDesc() : '' }"
+  ></textarea>
   <button>Save</button>
 </form>

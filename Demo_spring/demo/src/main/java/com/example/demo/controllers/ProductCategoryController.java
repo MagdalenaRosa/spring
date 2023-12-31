@@ -5,12 +5,15 @@ import com.example.demo.services.ProductCategoryService;
 
 import jakarta.validation.Valid;
 
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class ProductCategoryController {
@@ -31,8 +34,20 @@ public class ProductCategoryController {
     }
 
     @PostMapping("/saveCategory")
-    public String saveProductCategory(@Valid ProductCategory productCategoryForm) {
-        service.insertCategory(productCategoryForm);
+    public String saveProductCategory(@Valid ProductCategory productCategoryForm, BindingResult bindingResult,
+            RedirectAttributes attributes) {
+        if (bindingResult.hasErrors()) {
+            var errors = bindingResult.getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .toList();
+            attributes.addFlashAttribute("errors", errors);
+            attributes.addFlashAttribute("category", productCategoryForm);
+
+        } else {
+            service.insertCategory(productCategoryForm);
+
+        }
+
         return "redirect:/categories";
     }
 
@@ -53,9 +68,19 @@ public class ProductCategoryController {
     }
 
     @PostMapping("/editedCategory/{categoryId}")
-    public String saveEditedCategory(@PathVariable Integer categoryId, ProductCategory categoryForm) {
-        service.updateCategory(categoryForm, categoryId);
-        return "redirect:/categories";
+    public String saveEditedCategory(@PathVariable Integer categoryId, @Valid ProductCategory categoryForm,
+            BindingResult bindingResult, RedirectAttributes attributes) {
+        if (bindingResult.hasErrors()) {
+            var errors = bindingResult.getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .toList();
+            attributes.addFlashAttribute("errors", errors);
+            attributes.addFlashAttribute("product", categoryForm);
+            return "redirect:/editCategory/" + categoryId;
+        } else {
+            service.updateCategory(categoryForm, categoryId);
+            return "redirect:/categories";
+        }
     }
 
     @GetMapping("/removeCategory/{categoryID}")

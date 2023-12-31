@@ -5,12 +5,15 @@ import com.example.demo.services.ProductService;
 
 import jakarta.validation.Valid;
 
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class ProductController {
@@ -32,8 +35,17 @@ public class ProductController {
     @PostMapping("/saveProduct") // metodą post by dane były chronione
     // tu te @requestparam muszą być takie jak w modelu Product nie inne !!! ->
     // lepiej żeby przyjmowało obiekt product
-    public String saveProduct(@Valid Product productform) {
-        productService.insertProduct(productform);
+    public String saveProduct(@Valid Product productform, BindingResult bindingResult, RedirectAttributes attributes) {
+        if (bindingResult.hasErrors()) {
+            var errors = bindingResult.getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .toList();
+            attributes.addFlashAttribute("errors", errors);
+            attributes.addFlashAttribute("product", productform);
+        } else {
+            productService.insertProduct(productform);
+        }
+
         return "redirect:/";
     }
 
@@ -58,9 +70,20 @@ public class ProductController {
     }
 
     @PostMapping("/editedProduct/{productId}")
-    public String saveEditedProduct(Product productFrom, @PathVariable Integer productId) {
-        productService.updateProduct(productFrom, productId);
-        return "redirect:/";
+    public String saveEditedProduct(@PathVariable Integer productId, @Valid Product productform,
+            BindingResult bindingResult, RedirectAttributes attributes) {
+        if (bindingResult.hasErrors()) {
+            var errors = bindingResult.getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .toList();
+            attributes.addFlashAttribute("errors", errors);
+            attributes.addFlashAttribute("product", productform);
+            return "redirect:/editProduct/" + productId;
+        } else {
+            productService.updateProduct(productform, productId);
+            return "redirect:/";
+
+        }
     }
 
     private void optionalProduct(@RequestParam Integer productId, Model model) {

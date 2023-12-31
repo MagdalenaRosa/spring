@@ -2,6 +2,7 @@ package com.example.demo.models;
 
 import java.math.BigDecimal;
 
+import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,9 +30,10 @@ public class Product {
     @Column(length = 1024, name = "description")
     private String desc;
     @Column(length = 1024)
-    @NotBlank
+    @NotBlank(message = "Adres obrazka jest wymagany")
     private String urlUri;
-    @NotNull
+
+    @NotNull(message = "Cena produktu jest wymagana")
     private BigDecimal price;
 
 }
