@@ -1,0 +1,5 @@
+<div th:replace="~{fragments/main-menu}"></div>
+
+<ul>
+  <li th:each="user : ${users}" th:text="${user}"></li>
+</ul>
