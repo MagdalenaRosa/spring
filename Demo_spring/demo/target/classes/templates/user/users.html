@@ -1,5 +1,9 @@
 <div th:replace="~{fragments/main-menu}"></div>
 
 <ul>
-  <li th:each="user : ${users}" th:text="${user}"></li>
+  <li th:each="user : ${users}">
+    <span th:text="${user.getName()}"></span>
+    <span th:text="${user.getSurname()}"></span
+    ><a th:href="${ '/user/id/' + user.getId() }"> [show more details]</a>
+  </li>
 </ul>

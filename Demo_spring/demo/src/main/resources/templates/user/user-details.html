@@ -1,0 +1,12 @@
+<ul>
+  <li th:each="user : ${users}">
+    <span th:text="${user.getName()}"></span>
+    <span th:text="${user.getSurname()}"></span>
+    <div th:if="${user.getPhoneNumber() != null}">
+      PersonalNumber:
+      <div th:each="phoneNumber : ${user.phoneNumber}">
+        <span th:text="${phoneNumber.getNumber()}"></span>
+      </div>
+    </div>
+  </li>
+</ul>
