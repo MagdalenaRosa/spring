@@ -1,16 +1,15 @@
 package com.example.demo.models;
 
 import java.math.BigDecimal;
-import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
+
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -44,13 +43,12 @@ public class Product {
     @NotNull(message = "Cena produktu jest wymagana")
     private BigDecimal price;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "categoryId")
     private ProductCategory category;
 
     // kilka produktów do róznych skladników
-    @ManyToMany
-    @JoinTable(name = "pivot product ingredient")
-    private List<Ingredients> ingredients;
+    @NotBlank
+    private String ingredients;
 
 }

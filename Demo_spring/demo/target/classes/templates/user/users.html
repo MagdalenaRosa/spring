@@ -1,9 +1,11 @@
 <div th:replace="~{fragments/main-menu}"></div>
-
+<a href="/user/add">[ADD NEW USER]</a>
 <ul>
   <li th:each="user : ${users}">
-    <span th:text="${user.getName()}"></span>
-    <span th:text="${user.getSurname()}"></span
-    ><a th:href="${ '/user/id/' + user.getId() }"> [show more details]</a>
+    <span th:text="${user.getFirstName()}"></span>
+    <span th:text="${user.getLastName()}"></span>
+    <a th:href="${ '/user/id/' + user.getUserId() }"> [show details]</a>
+    <a th:href="${ '/user/remove/id/' + user.getUserId() }"> [remove user]</a>
+    <a th:href="${ '/user/update/id/' + user.getUserId() }"> [update user]</a>
   </li>
 </ul>

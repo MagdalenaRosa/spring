@@ -20,7 +20,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @Entity
-public class Adresses {
+public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer addressId;

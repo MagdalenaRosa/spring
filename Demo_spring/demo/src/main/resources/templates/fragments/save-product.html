@@ -25,5 +25,12 @@
     rows="5"
     th:text="${ product != null ? product.getDesc() : '' }"
   ></textarea>
+  <textarea
+    name="ingredients"
+    placeholder="Ingredients"
+    rows="5"
+    th:text="${ product != null ? product.getIngredients() : '' }"
+  ></textarea>
+
   <button>Save</button>
 </form>
