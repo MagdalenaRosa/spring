@@ -18,10 +18,11 @@ import lombok.ToString;
 @Setter
 @Getter
 @Entity
-public class PhoneNumber {
+public class UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer phoneId; // PK
-    private String prefix;
-    private String number;
+    private Integer userDetailsId; // PK
+    private String taxNumber;
+    private String personalNumber;
+
 }

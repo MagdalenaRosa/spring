@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,10 +20,15 @@ import lombok.ToString;
 @Setter
 @Getter
 @Entity
-public class PhoneNumber {
+public class Adresses {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer phoneId; // PK
-    private String prefix;
-    private String number;
+    private Integer addressId;
+
+    @Size(min = 3, max = 255)
+    @NotBlank
+    private String city;
+    @Size(min = 3, max = 255)
+    @NotBlank
+    private String street;
 }

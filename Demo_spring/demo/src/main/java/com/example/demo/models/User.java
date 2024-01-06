@@ -2,12 +2,17 @@ package com.example.demo.models;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,6 +39,15 @@ public class User {
     @NotBlank
     @Column(unique = true)
     private String email;
-    @OneToMany
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true) // OneToOne (o2o) - 1 do 1 -> @OneToOne
+    @JoinColumn(name = "detailId")
+    private UserDetails details;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true) // OneToMany (o2m) - 1 do wielu -> @OneToMany
+    @JoinColumn(name = "userId")
     private List<PhoneNumber> phoneNumber;
+    @ManyToMany // ManyToMany (m2m) - wiele do wielu -> @ManyToMany
+    @JoinTable(name = "user_address_pivot", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
+            @JoinColumn(name = "address_id") })
+    private List<Adresses> address;
+
 }
