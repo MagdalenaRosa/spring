@@ -4,12 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 @ToString
 @Builder
@@ -24,5 +19,4 @@ public class UserDetails {
     private Integer userDetailsId; // PK
     private String taxNumber;
     private String personalNumber;
-
 }

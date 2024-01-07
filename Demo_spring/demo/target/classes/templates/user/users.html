@@ -1,11 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User</title>
+</head>
+<body>
+
 <div th:replace="~{fragments/main-menu}"></div>
-<a href="/user/add">[ADD NEW USER]</a>
-<ul>
-  <li th:each="user : ${users}">
-    <span th:text="${user.getFirstName()}"></span>
-    <span th:text="${user.getLastName()}"></span>
-    <a th:href="${ '/user/id/' + user.getUserId() }"> [show details]</a>
-    <a th:href="${ '/user/remove/id/' + user.getUserId() }"> [remove user]</a>
-    <a th:href="${ '/user/update/id/' + user.getUserId() }"> [update user]</a>
-  </li>
-</ul>
+<h1>All users</h1>
+
+<a href="/user/add">[add new user]</a>
+<hr/>
+
+<div th:each="user : ${users}">
+    <div>
+        Id: <span th:text="${user.getUserId()}"></span>
+    </div>
+    <div>
+        FirstName:<span th:text="${user.getFirstName()}"></span>
+    </div>
+    <div>
+        LastName: <span th:text="${user.getLastName()}"></span>
+    </div>
+    <a th:href="${ '/user/id/' + user.getUserId() }">[show more]</a>
+    <a th:href="${ '/user/remove/' + user.getUserId() }">[remove]</a>
+    <a th:href="${ '/user/edit/' + user.getUserId() }">[edit]</a>
+    <hr/>
+</div>
+
+</body>
+</html>

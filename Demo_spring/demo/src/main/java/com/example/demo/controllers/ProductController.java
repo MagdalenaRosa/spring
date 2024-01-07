@@ -1,8 +1,6 @@
 package com.example.demo.controllers;
 
 import com.example.demo.models.Product;
-import com.example.demo.models.ProductCategory;
-import com.example.demo.models.dto.ProductSaveDto;
 import com.example.demo.services.ProductService;
 
 import jakarta.validation.Valid;
@@ -35,9 +33,8 @@ public class ProductController {
     @PostMapping("/saveProduct") // metodą post by dane były chronione
     // tu te @requestparam muszą być takie jak w modelu Product nie inne !!! ->
     // lepiej żeby przyjmowało obiekt product
-    public String saveProduct(@Valid Product productform, BindingResult bindingResult, ProductSaveDto productSaveDto,
+    public String saveProduct(@Valid Product productform, BindingResult bindingResult,
             RedirectAttributes attributes) {
-        var chosenCategory = ProductCategory.builder().name(productSaveDto.getName()).build();
 
         if (bindingResult.hasErrors()) {
             var errors = bindingResult.getAllErrors().stream()
