@@ -16,101 +16,93 @@
       method="post"
       th:action="${ user != null && user.getUserId() != null ? '/user/update/' + user.getUserId() : '/user/save' }"
     >
-      <label>
-        FirstName
-        <input
-          name="firstName"
-          th:value="${ user != null ? user.getFirstName() : '' }"
-        />
-      </label>
-      <br />
-      <label>
-        LastName
-        <input
-          name="lastName"
-          th:value="${ user != null ? user.getLastName() : '' }"
-        />
-      </label>
-      <br />
-      <label>
-        Email
-        <input
-          name="email"
-          th:value="${ user != null ? user.getEmail() : '' }"
-          type="email"
-        />
-      </label>
-      <br />
-      <label>
-        PersonalNumber
-        <input
-          name="personalNumber"
-          th:value="${ user != null ? user.getDetails().getPersonalNumber() : '' }"
-          type="number"
-        />
-      </label>
-      <label>
-        TaxNumber
-        <input
-          name="taxNumber"
-          th:value="${ user != null ? user.getDetails().getTaxNumber() : '' }"
-          type="number"
-        />
-      </label>
+      <input
+        placeholder="First name"
+        class="form-control"
+        name="firstName"
+        th:value="${ user != null ? user.getFirstName() : '' }"
+      />
+
+      <input
+        placeholder="Last name"
+        class="form-control"
+        name="lastName"
+        th:value="${ user != null ? user.getLastName() : '' }"
+      />
+
+      <input
+        placeholder="Email"
+        class="form-control"
+        name="email"
+        th:value="${ user != null ? user.getEmail() : '' }"
+        type="email"
+      />
+
+      <input
+        placeholder="Personal number"
+        class="form-control"
+        name="personalNumber"
+        th:value="${ user != null ? user.getDetails().getPersonalNumber() : '' }"
+        type="number"
+      />
+
+      <input
+        placeholder="Pesel - Tax Number "
+        class="form-control"
+        name="taxNumber"
+        th:value="${ user != null ? user.getDetails().getTaxNumber() : '' }"
+        type="number"
+      />
+
       <br />
       <div th:if="${user == null}">
-        <label>
-          prefix
-          <input name="prefix" />
-        </label>
-        <label>
-          number
-          <input name="number" type="number" />
-        </label>
+        <input name="prefix" class="form-control" placeholder="prefix" />
+
+        <input
+          name="number"
+          type="number"
+          class="form-control"
+          placeholder="Number"
+        />
       </div>
       <div th:if="${user != null && user.getPhoneNumber() != null}">
         <div th:each="phoneNumber : ${user.getPhoneNumber()}">
-          <label>
-            prefix
-            <input name="prefix" th:value="${phoneNumber.getPrefix()}" />
-          </label>
-          <label>
-            number
-            <input
-              name="number"
-              th:value="${phoneNumber.getNumber()}"
-              type="number"
-            />
-          </label>
+          <input
+            placeholder="prefix"
+            class="form-control"
+            name="prefix"
+            th:value="${phoneNumber.getPrefix()}"
+          />
+
+          <input
+            placeholder="Number"
+            class="form-control"
+            name="number"
+            th:value="${phoneNumber.getNumber()}"
+            type="number"
+          />
         </div>
       </div>
+
+      <select name="address" class="form-control">
+        <option
+          th:each="address : ${addresses}"
+          th:selected="${user != null && user.getAddress() != null && user.getAddress().size() > 0  && address.getAddressId() == user.getAddress().get(0).getAddressId()}"
+          th:text="${address.getCity() + ', ' + address.getStreet()}"
+          th:value="${address.getAddressId()}"
+        ></option>
+      </select>
+
       <br />
-      <label>
-        Addresses:
-        <select name="address">
-          <option
-            th:each="address : ${addresses}"
-            th:selected="${user != null && user.getAddress() != null && user.getAddress().size() > 0  && address.getAddressId() == user.getAddress().get(0).getAddressId()}"
-            th:text="${address.getCity() + ', ' + address.getStreet()}"
-            th:value="${address.getAddressId()}"
-          ></option>
-        </select>
-      </label>
-      <br />
-      <button>save</button>
+      <button class="btn btn-primary">save</button>
     </form>
     <hr />
     <form action="/user/address/add" method="post">
-      <label>
-        city
-        <input name="city" />
-      </label>
-      <label>
-        street
-        <input name="street" />
-      </label>
-      <br />
-      <button>save</button>
+      <input name="city" class="form-control" placeholder="City" />
+
+      <input name="street" class="form-control" placeholder="Street " />
+
+      <button class="btn btn-primary">save</button>
     </form>
   </body>
 </html>

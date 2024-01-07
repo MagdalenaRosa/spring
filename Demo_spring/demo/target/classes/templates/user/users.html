@@ -1,32 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>User</title>
-</head>
-<body>
+  </head>
+  <body>
+    <div th:replace="~{fragments/main-menu}"></div>
+    <h1>All users</h1>
+    <a class="btn btn-primary" href="/user/add" role="button">Add New User</a>
 
-<div th:replace="~{fragments/main-menu}"></div>
-<h1>All users</h1>
+    <hr />
 
-<a href="/user/add">[add new user]</a>
-<hr/>
+    <div th:each="user : ${users}">
+      <span th:text="${user.getFirstName()  + ' ' + user.getLastName()}"></span>
 
-<div th:each="user : ${users}">
-    <div>
-        Id: <span th:text="${user.getUserId()}"></span>
+      <a
+        th:href="${ '/user/id/' + user.getUserId() }"
+        class="btn btn-secondary btn-sm mx-3"
+        >Show more</a
+      >
+      <a
+        th:href="${ '/user/remove/' + user.getUserId() }"
+        class="btn btn-danger btn-sm mx-2"
+        >Remove</a
+      >
+      <a
+        th:href="${ '/user/edit/' + user.getUserId() }"
+        class="btn btn-primary btn-sm"
+        >Edit</a
+      >
+      <hr />
     </div>
-    <div>
-        FirstName:<span th:text="${user.getFirstName()}"></span>
-    </div>
-    <div>
-        LastName: <span th:text="${user.getLastName()}"></span>
-    </div>
-    <a th:href="${ '/user/id/' + user.getUserId() }">[show more]</a>
-    <a th:href="${ '/user/remove/' + user.getUserId() }">[remove]</a>
-    <a th:href="${ '/user/edit/' + user.getUserId() }">[edit]</a>
-    <hr/>
-</div>
-
-</body>
+  </body>
 </html>

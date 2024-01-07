@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+  </head>
+  <body>
+    <div th:replace="~{fragments/main-menu}"></div>
+    <div class="card">
+        <img alt="" th:src="${product.getImgUri()}" class="card-img-top" style="width: 100px;" />
+        <div class="card-body">
+            <h5 class="card-title">
+                Details of
+                <span th:text="${product.getName()}"></span>
+            </h5>
+            <p class="card-text">
+                Description:
+                <span th:text="${product.getDesc()}"></span>
+            </p>
+            <p class="card-text">
+                Price:
+                <span th:text="${product.getPrice()}"></span> PLN
+            </p>
+            <p class="card-text">
+                Ingredients:
+                <span th:text="${product.getIngredients()}"></span> 
+            </p>
+            <p th:if="${product.getCategory() != null}" class="card-text">
+                Category:
+                <a th:href="${'/categoryDetails/' + product.getCategory().getId()}" class="card-link"
+                   th:text="${product.getCategory().getName()}"></a>
+            </p>
+        </div>
+  </body>
+</html>

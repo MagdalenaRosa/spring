@@ -1,21 +1,27 @@
-<ul>
-  <li th:each="error : ${errors}" th:text="${error}"></li>
+<hr />
+
+<ul class="list-unstyled">
+  <li th:each="error : ${errors}" th:text="${error}" class="text-danger"></li>
 </ul>
-<form method="post" th:action="${action}">
+
+<form method="post" th:action="${actionUri}">
   <input
+    class="form-control"
     name="name"
     placeholder="Category name"
     th:value="${ category != null ? category.getName() : '' }"
   />
   <input
+    class="form-control"
     name="desc"
     placeholder="Category desc"
     th:value="${ category != null ? category.getDesc() : ''}"
   />
   <input
+    class="form-control"
     name="imgUri"
     placeholder="Category img"
     th:value="${ category != null ? category.getImgUri() : '' }"
   />
-  <button>Save</button>
+  <button class="btn btn-primary">Save</button>
 </form>

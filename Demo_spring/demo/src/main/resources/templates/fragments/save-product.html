@@ -1,36 +1,50 @@
 <hr />
-<ul>
-  <li th:each="error : ${errors}" th:text="${error}"></li>
+<ul class="list-unstyled">
+  <li th:each="error : ${errors}" th:text="${error}" class="text-danger"></li>
 </ul>
-<form method="post" th:action="${action}">
+
+<form method="post" th:action="${actionUri}">
   <input
+    class="form-control"
     name="name"
     placeholder="Product name"
     th:value="${ product != null ? product.getName() : '' }"
   />
+
   <input
+    class="form-control"
     name="price"
     placeholder="Product price"
     th:value="${ product != null ? product.getPrice() : '' }"
     type="number"
   />
   <input
-    name="urlUri"
+    class="form-control"
+    name="imgUri"
     placeholder="Product img"
-    th:value="${ product != null ? product.getUrlUri() : '' }"
+    th:value="${ product != null ? product.getImgUri() : '' }"
   />
   <textarea
+    class="form-control"
     name="desc"
     placeholder="Product desc"
     rows="5"
     th:text="${ product != null ? product.getDesc() : '' }"
   ></textarea>
   <textarea
+    class="form-control"
     name="ingredients"
-    placeholder="Ingredients"
+    placeholder="Product ingredients"
     rows="5"
     th:text="${ product != null ? product.getIngredients() : '' }"
   ></textarea>
-
-  <button>Save</button>
+  <select name="category" class="form-control">
+    <option
+      th:each="category : ${categories}"
+      th:selected="${product != null && product.getCategory() != null && category.getId() == product.getCategory().getId()}"
+      th:text="${category.getName()}"
+      th:value="${category.getId()}"
+    ></option>
+  </select>
+  <button class="btn btn-primary">Save</button>
 </form>

@@ -2,21 +2,19 @@ package com.example.demo.services;
 
 import java.util.List;
 import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
 
 import com.example.demo.models.Product;
 import com.example.demo.repositories.ProductRepository;
 
-import lombok.RequiredArgsConstructor;
-
 @RequiredArgsConstructor
-@Service
+@Service // IoC
 public class ProductService {
 
-    // product repository
-
     final ProductRepository productRepository;
+    final ProductCategoryService productCategoryService;
 
     public List<Product> findAllProducts() {
         return productRepository.findAll();
@@ -26,28 +24,30 @@ public class ProductService {
         return productRepository.existsByName(productFrom.getName());
     }
 
-    public void insertProduct(Product productform) {
-        var productExists = existsProductByName(productform);
+    public void insertProduct(Product productFrom) {
+        var productExists = existsProductByName(productFrom);
         if (!productExists) {
-            productform.setId(null);
-            productRepository.save(productform); // sql: insert jeżeli obiekt NIE posiada id
+            productFrom.setId(null);
+            productRepository.save(productFrom); // sql: insert jeżeli obiekt NIE posiada id
+        } else {
+            // todo: komunikat dla usera?
         }
-
     }
 
     public void updateProduct(Product productFrom, Integer productId) {
         productFrom.setId(productId);
-        productRepository.save(productFrom);
+        productRepository.save(productFrom); // sql: update jeżeli obiekt posiada id
     }
 
-    public void deleteProduct(Integer productId) {
+    public void removeProduct(Integer productId) {
         productRepository.deleteById(productId);
-
     }
 
-    public Optional<Product> findProduct(Integer productId) {
+    public Optional<Product> findProductById(Integer productId) {
         return productRepository.findById(productId);
-
     }
 
+    public List<Product> findProductByCategoryId(Integer categoryId) {
+        return productRepository.findAllByCategoryId(categoryId);
+    }
 }

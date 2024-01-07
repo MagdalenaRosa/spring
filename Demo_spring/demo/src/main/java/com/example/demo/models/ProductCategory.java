@@ -1,36 +1,37 @@
 package com.example.demo.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import java.util.List;
+
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+@ToString
 @Builder
-@Entity // to hibernate -> do baz
+@AllArgsConstructor
 @NoArgsConstructor
-@AllArgsConstructor // DependencyInjection
-@Getter
 @Setter
+@Getter
+@Entity
 public class ProductCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     @NotBlank(message = "Nazwa kategorii nie może być pusta")
-    @Size(min = 2, max = 1024, message = "Nazwa kategorii powinna mięścić się w dziedziale od 2-1024 znaków")
+    @Size(min = 5, max = 255, message = "Nazwa kategorii musi być od 5 do 255 znaków")
     private String name;
+
     @NotBlank(message = "Opis kategorii nie może być pusty")
-    @Column(columnDefinition = "Text", name = "description")
+    @Size(min = 5, max = 255, message = "Opis kategorii musi być od 10 do 1023 znaków")
+    @Column(name = "description")
     private String desc;
-    @Column(length = 1024)
-    @NotBlank(message = "Adres obrazka jest wymagany")
+
+    @NotBlank(message = "Link do obrazka kategorii nie może być pusty")
+    @Size(min = 5, max = 255, message = "Link do obrazka kategorii musi być od 5 do 255 znaków")
     private String imgUri;
 
+    @OneToMany(mappedBy = "category")
+    private List<Product> products;
 }

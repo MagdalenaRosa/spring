@@ -11,6 +11,7 @@ import com.example.demo.models.User;
 import com.example.demo.repositories.AddressRepository;
 import com.example.demo.repositories.UserRepository;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -32,7 +33,7 @@ public class UserService {
         return userRepository.findById(userId);
     }
 
-    public void saveAddress(Address address) {
+    public void saveAddress(@Valid Address address) {
         addressRepository.save(address);
     }
 
@@ -41,7 +42,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void updateUser(Integer userId, User user) {
+    public void updateUser(Integer userId, @Valid User user) {
         user.setUserId(userId);
         userRepository.save(user);
     }

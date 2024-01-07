@@ -1,46 +1,49 @@
 package com.example.demo.services;
 
-import java.util.List;
-import java.util.Optional;
-
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import com.example.demo.models.ProductCategory;
 import com.example.demo.repositories.ProductCategoryRepository;
 
-import lombok.RequiredArgsConstructor;
+import java.util.List;
+import java.util.Optional;
 
+// IoC
 @RequiredArgsConstructor
-@Service
-public class ProductCategoryService { // cała logika biznesowa w nim znajdowane są
+@Service // Bean (java ee) / Component (spring)
+public class ProductCategoryService {
 
     final ProductCategoryRepository productCategoryRepository;
 
-    public List<ProductCategory> findAllCategories() {
+    public List<ProductCategory> findAllCategoryProducts() {
         return productCategoryRepository.findAll();
     }
 
-    public boolean categoryExistByName(ProductCategory productCategoryForm) {
-        return productCategoryRepository.existsByName(productCategoryForm.getName());
+    public boolean existsProductCategoryByName(ProductCategory productCategory) {
+        return productCategoryRepository.existsByName(productCategory.getName());
     }
 
-    public void insertCategory(ProductCategory categoryForm) {
-        var productCategoryExist = categoryExistByName(categoryForm);
-        if (!productCategoryExist) {
-            categoryForm.setId(null);
-            productCategoryRepository.save(categoryForm);
+    public void insertProductCategory(ProductCategory productCategory) {
+        var categoryExists = existsProductCategoryByName(productCategory);
+        if (!categoryExists) {
+            productCategory.setId(null);
+            productCategoryRepository.save(productCategory); // insert!
+        } else {
+            // todo: komunikat dla usera?
         }
     }
 
-    public void deleteCategory(Integer categoryID) {
-        productCategoryRepository.deleteById(categoryID);
-    }
-
-    public void updateCategory(ProductCategory categoryForm, Integer categoryId) {
+    public void updateProductCategory(Integer categoryId, ProductCategory categoryForm) {
         categoryForm.setId(categoryId);
-        productCategoryRepository.save(categoryForm);
+        productCategoryRepository.save(categoryForm); // update!
     }
 
-    public Optional<ProductCategory> findProductCategory(Integer categoryId) {
+    public void removeProductCategory(Integer categoryId) {
+        productCategoryRepository.deleteById(categoryId);
+    }
+
+    public Optional<ProductCategory> findProductCategoryById(Integer categoryId) {
         return productCategoryRepository.findById(categoryId);
     }
 }
