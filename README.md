@@ -1,7 +1,7 @@
 ## PepperoniCraft Control - still in progress
 Simple application using spring boot
 ![Zrzut ekranu 2024-01-7 o 21 25 04](https://github.com/MagdalenaRosa/spring/assets/128220619/fddc5617-fc6f-46e8-85f6-471c85bc27c6)
- ![Zrzut ekranu 2024-01-7 o 21 25 38](https://github.com/MagdalenaRosa/spring/assets/128220619/3071e900-76b8-4cde-94a5-2fd23d1948ea)
+![Zrzut ekranu 2024-01-7 o 21 25 04](https://github.com/MagdalenaRosa/spring/assets/128220619/76b5d48b-9fe7-4e88-8900-d06c6ffc8c66)
 ![Zrzut ekranu 2024-01-7 o 21 25 38](https://github.com/MagdalenaRosa/spring/assets/128220619/e1af0e61-2890-4165-8e9d-8c7b4fd00992)
 
 
